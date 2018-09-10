@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+	<h:head></h:head>
+	<h:body>
+		<f:loadBundle basename="resources" var="msg"/>
+		<h:form id="form">
+		    <p:dataGrid var="buyOrder" value="#{dataGridView.buyOrders}" columns="3" layout="grid"
+		        rows="12" paginator="true" id="buyOrders"
+		        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		        rowsPerPageTemplate="6,12,16">
+		 
+		        <f:facet name="header">
+		            #{msg['header.datagrid.title']}
+		            <p:commandLink action="#{dataGridView.updateProductsAction}" update=":form:" title="#{msg['header.update.hint']}" style="float:left;">
+		                    <h:outputText styleClass="ui-icon ui-icon-refresh" style="margin:0 auto;" />
+		             </p:commandLink>
+		        </f:facet>
+		 
+		        <p:panel header="#{msg['header.datagrid.element']}#{buyOrder.id}" style="text-align:center">
+		            <h:panelGrid columns="1" style="width:100%">
+		 
+		                <h:outputText value="#{buyOrder.customer.name}" />
+		 
+		                <h:outputText value="#{buyOrder.customer.addr}" />
+		 
+		                <p:commandLink update=":form:buyOrderDetail" oncomplete="PF('buyOrderDialog').show()" title="#{msg['body.datagrid.hint']}">
+		                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+		                    <f:setPropertyActionListener value="#{buyOrder}" target="#{dataGridView.selectedBuyOrder}" />
+		                </p:commandLink>
+		            </h:panelGrid>
+		        </p:panel>
+		    </p:dataGrid>
+		 
+		    <p:dialog header="Buy order Info" widgetVar="buyOrderDialog" modal="true" resizable="false">
+		        <p:outputPanel id="buyOrderDetail" style="text-align:center;">
+		            <h:outputText value="#{msg['body.detail.date']} #{dataGridView.dateFetchService.date}" />
+		            <p:panelGrid  columns="2" rendered="#{not empty dataGridView.selectedBuyOrder}" columnClasses="label,value">
+		 
+		                <h:outputText value="#{msg['body.detail.orderid']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrder.id}" />
+		 
+		                <h:outputText value="#{msg['body.detail.name']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrder.customer.name}" />
+		 
+		                <h:outputText value="#{msg['body.detail.addr']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrder.customer.addr}"/>
+		            </p:panelGrid>
+			        <p:dataList value="#{dataGridView.selectedBuyOrder.buyOrderDetails}" paginator="true" rows="5" var="orderDetail"> 
+				        <f:facet name="header">
+				            #{msg['header.detail.products']}
+				        </f:facet>
+				        <p:commandLink update=":form:orderDetailView" oncomplete="PF('orderDetailDialog').show()" title="#{msg['body.detail.hint']}Order Detail" style="float:left;margin-right:10px">
+				            <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+				            <f:setPropertyActionListener value="#{orderDetail}" target="#{dataGridView.selectedBuyOrderDetail}" />
+				        </p:commandLink>
+				        <h:outputText value="#{orderDetail.product.name}, $ #{orderDetail.product.price},  x #{orderDetail.quantity}" style="display:inline-block"/>
+				    </p:dataList>
+		        </p:outputPanel>
+		    </p:dialog>
+		    <p:dialog header="#{msg['header.product.title']}" widgetVar="orderDetailDialog" modal="true" resizable="false">
+		        <p:outputPanel id="orderDetailView" style="text-align:center;">
+		            <p:panelGrid  columns="2" rendered="#{not empty dataGridView.selectedBuyOrderDetail}" columnClasses="label,value">
+		 
+		                <h:outputText value="#{msg['body.product.serial']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrderDetail.product.serial}" />
+		 
+		                <h:outputText value="#{msg['body.product.name']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrderDetail.product.name}" />
+		 
+		                <h:outputText value="#{msg['body.product.price']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrderDetail.product.price}"/>
+		 
+		                <h:outputText value="#{msg['body.product.quantity']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrderDetail.quantity}"/>
+		 
+		                <h:outputText value="#{msg['body.product.description']}" />
+		                <h:outputText value="#{dataGridView.selectedBuyOrderDetail.product.description}"/>
+		            </p:panelGrid>
+	            </p:outputPanel>
+            </p:dialog>
+		</h:form>
+	</h:body>
+</html>

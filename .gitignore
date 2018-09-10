@@ -1,1 +1,4 @@
-PrimeFacesTest\target
+PrimeFacesTest/target/
+PrimeFacesTest/.classpath
+PrimeFacesTest/.project
+PrimeFacesTest/.settings/

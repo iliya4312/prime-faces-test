@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<binding>
+	<mapping name="Product" class="ru.shoklevs.pftest.model.Product">
+		<value style="attribute" name="serial" field="serial"/>
+		<value name="name" field="name" />
+		<value name="description" field="description" />
+		<value name="manufactured" field="manufactured"/>
+		<value name="price" field="price"/>
+	</mapping>
+	<mapping name="ProductContainer" class="ru.shoklevs.pftest.jibx.ProductContainer" ordered="false">
+		<collection field="products" factory="ru.shoklevs.pftest.jibx.ProductContainer.listFactory">
+			<structure name="product" type="ru.shoklevs.pftest.model.Product">
+				<value style="attribute" name="serial" field="serial"/>
+				<value name="name" field="name" />
+				<value name="description" field="description" />
+				<value name="manufactured" field="manufactured"/>
+				<value name="price" field="price"/>
+			</structure>
+		</collection>
+	</mapping>
+</binding>
